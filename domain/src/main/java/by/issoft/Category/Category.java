@@ -20,7 +20,21 @@ public class Category {
         }
 
         productList.add(product);
+    }
 
+    public void printProductsInfo() {
+        System.out.println("Category " + name + " : " + productList);
+    }
+
+    @Override
+    public String toString() {
+        String resultString = "";
+        if (productList == null) return "";
+        for (int index = 0; index < productList.size(); index++){
+            Product currentProduct = productList.get(index);
+            resultString = resultString + currentProduct.toString() + " ";
+        }
+        return resultString;
     }
 }
 

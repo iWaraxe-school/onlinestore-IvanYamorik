@@ -9,6 +9,8 @@ public class StoreApp {
         System.out.println(" My store");
 
         Store newStore = new Store();
+        String storeString = newStore.toString();
 
+        System.out.println(storeString);
     }
 }
