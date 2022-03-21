@@ -3,14 +3,10 @@ package by.issoft.store;
 import com.github.javafaker.Faker;
 
 public class RandomStorePopulator {
-    private Faker faker = new Faker();
+    private Faker faker;
 
     public RandomStorePopulator(Faker faker) {
         this.faker = faker;
-    }
-
-    public RandomStorePopulator() {
-
     }
 
     public String getProductName(String categoryName) {

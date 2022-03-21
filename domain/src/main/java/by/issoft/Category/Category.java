@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    public String name;
-    public List<Product> productList;
+    private String categoryName;
+    private List<Product> productList;
 
     public Category(String name){
 
-        this.name = name;
+        this.categoryName = name;
     }
 
     public void addProduct(Product product){
@@ -22,10 +22,33 @@ public class Category {
         productList.add(product);
     }
 
-    public void printProductsInfo() {
-        System.out.println("Category " + name + " : " + productList);
+    public String getName() {
+        return categoryName;
     }
 
+    @Override
+    public String toString() {
+
+        StringBuilder categoryStringBuilder = new StringBuilder();
+
+        categoryStringBuilder.append("Category: ");
+        categoryStringBuilder.append(categoryName);
+        categoryStringBuilder.append("\n");
+
+        if (productList == null) {
+            categoryStringBuilder.append("Empty ");
+            return categoryStringBuilder.toString();
+        }
+
+        for (int index = 0; index < productList.size(); index++){
+            Product currentProduct = productList.get(index);
+
+            categoryStringBuilder.append(currentProduct);
+            categoryStringBuilder.append("\n");
+
+        }
+        return categoryStringBuilder.toString();
+    }
 
 }
 
