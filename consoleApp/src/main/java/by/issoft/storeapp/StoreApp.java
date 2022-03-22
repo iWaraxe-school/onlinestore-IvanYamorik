@@ -9,8 +9,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class StoreApp {
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
+        printStoreWithoutReflection();
+
+        printStoreWithReflection();
+    }
+
+    public static void printStoreWithoutReflection() {
         System.out.println(" My store: ");
 
         Store newStore = new Store();
@@ -21,6 +27,11 @@ public class StoreApp {
         String storeString = newStore.toString();
 
         System.out.println(storeString);
+    }
+
+    public static void printStoreWithReflection()
+            throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
+            InstantiationException, IllegalAccessException {
         //reflections
         Class<?> storeClass = Class.forName("by.issoft.store.Store");
         Constructor<?> storeConstructor = storeClass.getConstructor();
@@ -39,20 +50,5 @@ public class StoreApp {
 
         System.out.println(" My store with reflection: ");
         System.out.println(storeString2);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
