@@ -37,5 +37,9 @@ public class Product {
         return productStringBuilder.toString();
 
     }
+
+    public <T> Comparable getId() {
+        return null;
+    }
 }
 

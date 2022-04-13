@@ -14,16 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class XmlReader<i> {
+public class XmlReader {
 
     private String ConfigFilePath = "store\\src\\main\\resources\\config.xml";
 
     public XmlReader() throws ParserConfigurationException, IOException, SAXException {
     }
 
-    public Map<String, String> getPropertiesToSort() throws ParserConfigurationException {
-        return null;
-    }
+    public Map<String, String> getPropertiesToSort() throws ParserConfigurationException, IOException, SAXException {
+
         String sortTag = "sort";
 
         Map<String, String> propertiesMap = new LinkedHashMap<>();
@@ -37,12 +36,14 @@ public class XmlReader<i> {
 
         Element elements;
         for (int i = 0; i < sortProperties.getLength(); i++) {
-        if (sortProperties.item(i).getNodeType() == Node.ELEMENT_NODE) {
-            elements = (Element) sortProperties.item(i);
+            if (sortProperties.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                elements = (Element) sortProperties.item(i);
 
-            propertiesMap.put(elements.getTagName().toLowerCase(Locale.ROOT), elements.getNodeValue().toLowerCase(Locale.ROOT));
+                propertiesMap.put(elements.getTagName().toLowerCase(Locale.ROOT), elements.getNodeValue().toLowerCase(Locale.ROOT));
+            }
+
         }
-
+        return propertiesMap;
     }
 
 }
