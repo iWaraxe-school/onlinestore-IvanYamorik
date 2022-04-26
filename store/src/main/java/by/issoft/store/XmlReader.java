@@ -39,7 +39,7 @@ public class XmlReader {
             if (sortProperties.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 elements = (Element) sortProperties.item(i);
 
-                propertiesMap.put(elements.getTagName().toLowerCase(Locale.ROOT), elements.getNodeValue().toLowerCase(Locale.ROOT));
+                propertiesMap.put(elements.getTagName().toUpperCase(Locale.ROOT), elements.getNodeValue().toLowerCase(Locale.ROOT));
             }
 
         }

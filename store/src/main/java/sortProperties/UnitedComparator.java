@@ -3,10 +3,7 @@ package sortProperties;
 import by.issoft.Product;
 import by.issoft.store.TagEnum;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class UnitedComparator {
     public static final String ASCENDING = "asc";
@@ -29,19 +26,28 @@ public class UnitedComparator {
 
         switch (TagEnum.valueOf(field.toUpperCase())) {
             case NAME -> {
-                return checkValue(value) ? new NameComparator() : new NameComparator().reversed();
+                return value.equals(ASCENDING) ? new NameComparator() : new NameComparator().reversed();
             }
             case PRICE -> {
                 return checkValue(value) ? new PriceComparator() : new PriceComparator().reversed();
             }
             case RATE -> {
-                return checkvalue(value) ? new RateComparator() : new RateComparator().reversed();
+                return checkValue(value) ? new RateComparator() : new RateComparator().reversed();
             }
             default -> System.out.println("No such fields in product");
         }
+        throw new RuntimeException("Exeption while choosing comparator");
+    }
+    protected boolean checkValue(String value){
+        return value.equals(ASCENDING);
     }
 
-    public List<Product> sortProducts(List<Product> products, Map<String, String> propertiesMap) {
 
+    public List<Product> sortProducts(List<Product> products, Map<String, String> propertiesMap) {
+        List<Product> productList = new ArrayList<>(products);
+        for (Map.Entry<String, String> entry : propertiesMap.entrySet()) {
+            productList.sort(chooseComparator(entry));
+        }
+        return productList;
     }
 }
