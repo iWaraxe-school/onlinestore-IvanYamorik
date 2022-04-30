@@ -1,15 +1,39 @@
 package by.issoft.storeapp;
 
 
+import by.issoft.Category.Category;
+import by.issoft.Product;
 import by.issoft.store.Store;
 import by.issoft.store.StoreFiller;
+import by.issoft.store.XmlReader;
+import org.xml.sax.SAXException;
+import sortProperties.UnitedComparator;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 public class StoreApp {
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
+
+        Store newStore = new Store();
+
+        StoreFiller storeFiller = new StoreFiller(newStore);
+        storeFiller.fillStoreRandomly();
+
+        Map<String, String> getPropertiesToSortMap = XmlReader.getPropertiesToSort();
+
+        UnitedComparator comparator = new UnitedComparator();
+        List<Category> categoryList = newStore.getCategoryList();
+        Category firstCategory = categoryList.get(0);
+        List<Product> firstCategoryProducts = firstCategory.getProductList();
+
+
+        List<Product> sortedProductList = comparator.sortProducts(firstCategoryProducts, getPropertiesToSortMap);
 
         printStoreWithoutReflection();
 
@@ -52,3 +76,4 @@ public class StoreApp {
         System.out.println(storeString2);
     }
 }
+

@@ -16,12 +16,10 @@ import java.util.Map;
 
 public class XmlReader {
 
-    private String ConfigFilePath = "store\\src\\main\\resources\\config.xml";
+    private static String ConfigFilePath = "store\\src\\main\\resources\\config.xml";
 
-    public XmlReader() throws ParserConfigurationException, IOException, SAXException {
-    }
 
-    public Map<String, String> getPropertiesToSort() throws ParserConfigurationException, IOException, SAXException {
+    public static Map<String, String> getPropertiesToSort() throws ParserConfigurationException, IOException, SAXException {
 
         String sortTag = "sort";
 
@@ -39,7 +37,7 @@ public class XmlReader {
             if (sortProperties.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 elements = (Element) sortProperties.item(i);
 
-                propertiesMap.put(elements.getTagName().toUpperCase(Locale.ROOT), elements.getNodeValue().toLowerCase(Locale.ROOT));
+                propertiesMap.put(elements.getTagName().toUpperCase(Locale.ROOT), elements.getTextContent().toLowerCase(Locale.ROOT));
             }
 
         }

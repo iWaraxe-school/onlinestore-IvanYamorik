@@ -50,5 +50,8 @@ public class Category {
         return categoryStringBuilder.toString();
     }
 
+    public List<Product> getProductList() {
+        return productList;
+    }
 }
 
