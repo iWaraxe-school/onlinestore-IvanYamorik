@@ -19,7 +19,9 @@ public class XmlReader {
     private static String ConfigFilePath = "store\\src\\main\\resources\\config.xml";
 
 
+
     public static Map<String, String> getPropertiesToSort() throws ParserConfigurationException, IOException, SAXException {
+
 
         String sortTag = "sort";
 
