@@ -38,8 +38,5 @@ public class Product {
 
     }
 
-    public <T> Comparable getId() {
-        return null;
-    }
 }
 
