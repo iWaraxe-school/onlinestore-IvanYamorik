@@ -16,11 +16,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
+import static java.lang.System.exit;
 
 public class StoreApp {
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
 
         Store newStore = new Store();
+
 
         StoreFiller storeFiller = new StoreFiller(newStore);
         storeFiller.fillStoreRandomly();
@@ -35,9 +39,47 @@ public class StoreApp {
 
         List<Product> sortedProductList = comparator.sortProducts(firstCategoryProducts, getPropertiesToSortMap);
 
+        public static void printMenu(String[] options){
+            for (String option : options){
+                System.out.println(option);
+            }
+            System.out.print("Choose your option : ");
+        }
+        public static void main(String[] args){
+            String[] options = {"1- sort",
+                    "2- top",
+                    "3- quit",
+            };
+            Scanner console = new Scanner(System.in);
+            int option = 1;
+            while (option != 3) {
+                printMenu(options);
+                try {
+                    option = console.nextInt();
+                    switch (option) {
+                        case 1:
+                            System.out.println(sortedProductList);
+                            break;
+                        case 2:
+                            System.out.println(topProducts);
+                            break;
+                        case 3:
+                            exit(0);
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter an integer value between 1 and " + options.length);
+                    console.next();
+                }
+
+            }
+
+        }
         printStoreWithoutReflection();
 
         printStoreWithReflection();
+    }
+
+    private static void printMenu(String[] options) {
     }
 
     public static void printStoreWithoutReflection() {
