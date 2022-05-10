@@ -16,7 +16,6 @@ public class UnitedComparator {
         List<Product> productList = products.stream()
                 .sorted(new PriceComparator().reversed())
                 .limit(TOP_FIVE).toList();
-        System.out.println(productList);
         return productList;
     }
 
