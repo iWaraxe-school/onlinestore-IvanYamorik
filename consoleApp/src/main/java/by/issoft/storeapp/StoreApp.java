@@ -23,15 +23,15 @@ import static java.lang.System.exit;
 public class StoreApp {
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
 
-        Store newStore = new Store();
+        Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(newStore);
+        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
         storeFiller.fillStoreRandomly();
 
         Map<String, String> getPropertiesToSortMap = XmlReader.getPropertiesToSort();
 
         UnitedComparator comparator = new UnitedComparator();
-        List<Category> categoryList = newStore.getCategoryList();
+        List<Category> categoryList = Store.getInstance().getCategoryList();
         Category firstCategory = categoryList.get(0);
         List<Product> firstCategoryProducts = firstCategory.getProductList();
 
@@ -85,12 +85,12 @@ public class StoreApp {
     public static void printStoreWithoutReflection() {
         System.out.println(" My store: ");
 
-        Store newStore = new Store();
+        Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(newStore);
+        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
         storeFiller.fillStoreRandomly();
 
-        String storeString = newStore.toString();
+        String storeString = Store.getInstance().toString();
 
         System.out.println(storeString);
     }
