@@ -3,6 +3,7 @@ package by.issoft.storeapp;
 
 import by.issoft.Category.Category;
 import by.issoft.Product;
+import by.issoft.store.CartRunnable;
 import by.issoft.store.Store;
 import by.issoft.store.StoreFiller;
 import by.issoft.store.XmlReader;
@@ -17,12 +18,12 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+import  java.util.concurrent.CopyOnWriteArrayList;
 import static java.lang.System.exit;
 
 public class StoreApp {
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
-
+        System.out.println("Main Thread");
         Store.getInstance();
 
         StoreFiller storeFiller = new StoreFiller(Store.getInstance());
@@ -35,11 +36,15 @@ public class StoreApp {
         Category firstCategory = categoryList.get(0);
         List<Product> firstCategoryProducts = firstCategory.getProductList();
 
-
+//Cleanup purchased product list products every 30 seconds
+        //Timer timer = new Timer();
+        //timer.schedule(new TimerCleanupTask(), 0,60000);
 
         String[] options = {"1- sort",
                             "2- top",
-                            "3- quit",
+                            "3- create order",
+                            "4- quit",
+
         };
         Scanner console = new Scanner(System.in);
         int option = 1;
@@ -57,6 +62,10 @@ public class StoreApp {
                         System.out.println(listTopProducts);
                         break;
                     case 3:
+                        createOrder(firstCategoryProducts);
+
+                        break;
+                    case 4:
                         exit(0);
                         break;
                     default:
@@ -73,6 +82,13 @@ public class StoreApp {
 
         //printStoreWithReflection();
     }
+
+    private static void createOrder(List<Product> allProducts) {
+        CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
+
+        new Thread(new CartRunnable(cart, allProducts)).start();
+    }
+
     public static void printMenu(String[] options){
         for (String option : options){
             System.out.println(option);
