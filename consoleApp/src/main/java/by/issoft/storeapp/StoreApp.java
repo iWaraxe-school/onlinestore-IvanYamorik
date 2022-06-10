@@ -3,10 +3,7 @@ package by.issoft.storeapp;
 
 import by.issoft.Category.Category;
 import by.issoft.Product;
-import by.issoft.store.CartRunnable;
-import by.issoft.store.Store;
-import by.issoft.store.StoreFiller;
-import by.issoft.store.XmlReader;
+import by.issoft.store.*;
 import org.xml.sax.SAXException;
 import sortProperties.UnitedComparator;
 
@@ -18,10 +15,14 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import  java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Timer;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import static java.lang.System.exit;
 
 public class StoreApp {
+    private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
+
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
         System.out.println("Main Thread");
         Store.getInstance();
@@ -36,9 +37,9 @@ public class StoreApp {
         Category firstCategory = categoryList.get(0);
         List<Product> firstCategoryProducts = firstCategory.getProductList();
 
-//Cleanup purchased product list products every 30 seconds
-        //Timer timer = new Timer();
-        //timer.schedule(new TimerCleanupTask(), 0,60000);
+        //Cleanup purchased product list products every 120 seconds
+        Timer timer = new Timer();
+        timer.schedule(new TimerCleanupTask(cart), 0,120000);
 
         String[] options = {"1- sort",
                             "2- top",
@@ -48,7 +49,7 @@ public class StoreApp {
         };
         Scanner console = new Scanner(System.in);
         int option = 1;
-        while (option != 3) {
+        while (option != 4) {
             printMenu(options);
             try {
                 option = console.nextInt();
@@ -66,6 +67,7 @@ public class StoreApp {
 
                         break;
                     case 4:
+                        timer.cancel();
                         exit(0);
                         break;
                     default:
@@ -84,7 +86,7 @@ public class StoreApp {
     }
 
     private static void createOrder(List<Product> allProducts) {
-        CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
+
 
         new Thread(new CartRunnable(cart, allProducts)).start();
     }

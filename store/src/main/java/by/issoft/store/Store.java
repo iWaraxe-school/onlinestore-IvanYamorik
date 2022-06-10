@@ -1,19 +1,13 @@
 package by.issoft.store;
 
 import by.issoft.Category.Category;
-import by.issoft.Product;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Store {
     private List<Category> categoryList;
-    private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
 
-    public void addProduct (Product product) {
-        cart.add(product);
-    };
 
     private static Store uniqueInstance;
 
