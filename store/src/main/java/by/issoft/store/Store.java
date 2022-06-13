@@ -8,6 +8,7 @@ import java.util.List;
 public class Store {
     private List<Category> categoryList;
 
+
     private static Store uniqueInstance;
 
     private Store(){
