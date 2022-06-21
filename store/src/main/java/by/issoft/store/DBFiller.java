@@ -1,12 +1,11 @@
 package by.issoft.store;
 
-import lombok.experimental.Helper;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-abstract class DBHelper implements Helper {
+class DBFiller implements StoreFiller {
     public static Connection connection;
 
     static {
@@ -18,5 +17,10 @@ abstract class DBHelper implements Helper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void fillStoreRandomly() {
+
     }
 }

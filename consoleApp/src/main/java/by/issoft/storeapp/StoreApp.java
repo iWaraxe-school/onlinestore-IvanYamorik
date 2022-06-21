@@ -27,7 +27,7 @@ public class StoreApp {
         System.out.println("Main Thread");
         Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
+        StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
         storeFiller.fillStoreRandomly();
 
         Map<String, String> getPropertiesToSortMap = XmlReader.getPropertiesToSort();
@@ -105,7 +105,7 @@ public class StoreApp {
 
         Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
+        InMemoryStoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
         storeFiller.fillStoreRandomly();
 
         String storeString = Store.getInstance().toString();
@@ -121,9 +121,9 @@ public class StoreApp {
         Constructor<?> storeConstructor = storeClass.getConstructor();
         Store newStore2 = (Store) storeConstructor.newInstance();
 
-        Class<?> storeFillerClass = Class.forName("by.issoft.store.StoreFiller");
+        Class<?> storeFillerClass = Class.forName("by.issoft.store.InMemoryStoreFiller");
         Constructor<?> storeFillerConstructor = storeFillerClass.getConstructor(Store.class);
-        StoreFiller storeFiller2 = (StoreFiller) storeFillerConstructor.newInstance(newStore2);
+        InMemoryStoreFiller storeFiller2 = (InMemoryStoreFiller) storeFillerConstructor.newInstance(newStore2);
 
         //Method.fillStoreRandomly
         Method fillStoreRandomlyMethod = storeFillerClass.getDeclaredMethod("fillStoreRandomly");
