@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,12 +24,16 @@ import static java.lang.System.exit;
 public class StoreApp {
     private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+            ParserConfigurationException, IOException, SAXException, SQLException {
         System.out.println("Main Thread");
         Store.getInstance();
 
-        StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
-        storeFiller.fillStoreRandomly();
+        DBFiller dbFiller = new DBFiller(Store.getInstance());
+        dbFiller.fillStoreRandomly();
+
+        //StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
+        //storeFiller.fillStoreRandomly();
 
         Map<String, String> getPropertiesToSortMap = XmlReader.getPropertiesToSort();
 
