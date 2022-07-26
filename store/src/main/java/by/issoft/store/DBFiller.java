@@ -5,8 +5,8 @@ import by.issoft.Category.Category;
 import com.github.javafaker.Faker;
 
 import java.sql.*;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class DBFiller implements StoreFiller {
 
@@ -73,22 +73,21 @@ public class DBFiller implements StoreFiller {
         }
     }
 
-
-
-
-
-    @Override
     public void fillStoreRandomly() throws SQLException {
+        Faker faker = new Faker();
+        RandomStorePopulator populator = new RandomStorePopulator(faker);
+        Set<Category> categorySet = createCategorySet();
 
-        List<Category> categories = Store.getInstance().getCategoryList();
-        for (int i = 0; i < categories.size(); i++) {
-            PreparedStatement insertCategories = connection.prepareStatement("INSERT INTO categories(id, name) VALUES (?, ?)");
-            insertCategories.setInt(1, i + 1);
-            insertCategories.setString(2, categories.get(i).getName());
+        for (Category category : categorySet) {
+            //add category to DB
+            System.out.println("inserted category " + category.getName() + "into DB");
+            try{
+            PreparedStatement insertCategories = CONNECTION.prepareStatement("INSERT INTO CATEGORIES(NAME) VALUES (?)");
+            insertCategories.setString(1, category.getName());
             insertCategories.execute();
 
-            Faker faker = new Faker();
-            RandomStorePopulator populator = new RandomStorePopulator(faker);
+            
+
 
 
 

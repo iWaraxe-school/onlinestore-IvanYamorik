@@ -29,7 +29,14 @@ public class StoreApp {
         System.out.println("Main Thread");
         Store.getInstance();
 
-        DBFiller dbFiller = new DBFiller(Store.getInstance());
+        Store onlineStore = new Store();
+
+        DBFiller dbFiller = new DBFiller(onlineStore);
+        dbFiller.connectToDB();
+        dbFiller.clearDB();
+        dbFiller.createCategoryTable();
+        dbFiller.createProductTable();
+
         dbFiller.fillStoreRandomly();
 
         //StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
