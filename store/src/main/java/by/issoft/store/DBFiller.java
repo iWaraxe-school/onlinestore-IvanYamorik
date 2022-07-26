@@ -4,32 +4,52 @@ package by.issoft.store;
 import by.issoft.Category.Category;
 import com.github.javafaker.Faker;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Random;
 
 public class DBFiller implements StoreFiller {
+
+    static Connection CONNECTION = null;
+    static Statement STATEMENT = null;
+    static ResultSet RESULTSET = null;
+    static final String URL = "jdbc:mysql://localhost:3306/onlinestore";
+    static final String USER = "user";
+    static final String PASSWORD = "";
+
     Store store;
-
-    public static Connection connection;
-
-    static {
-        try {
-            Class.forName("org.h2.Driver");
-            connection = DriverManager.getConnection("jdbc:h2:~/test; INIT=runscript from 'store/src/main/resources/init.sql'", "sa", "sa");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public DBFiller(Store store) {
         this.store = store;
     }
+
+    public void connectToDB() {
+        try {
+            //connect to DB
+            CONNECTION = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("\nDatabase connected\n");
+            //create a statement
+            STATEMENT = CONNECTION.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void clearDB() {
+        //drop tables if exist
+        String query1 = "DROP TABLE IF EXISTS CATEGORIES";
+        String query2 = "DROP TABLE IF EXISTS PRODUCTS";
+        try {
+            STATEMENT.executeUpdate(query2);
+            STATEMENT.executeUpdate(query1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    
+
+
 
     @Override
     public void fillStoreRandomly() throws SQLException {
