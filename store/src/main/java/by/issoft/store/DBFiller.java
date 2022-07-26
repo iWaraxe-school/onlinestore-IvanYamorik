@@ -47,7 +47,33 @@ public class DBFiller implements StoreFiller {
         }
     }
 
-    
+    public void createCategoryTable() {
+        String query = "CREATE TABLE IF NOT EXISTS CATEGORIES (" +
+                "ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
+                "NAME VARCHAR(255) NOT NULL);";
+        try {
+            STATEMENT.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createProductTable() {
+        String query = "CREATE TABLE IF NOT EXISTS PRODUCTS (" +
+                "ID INT PRIMARY KEY AUTO_INCREMENT" +
+                "CATEGORY_ID INT" +
+                "NAME VARCHAR(255) NOT NULL" +
+                "RATE DECIMAL(10, 2) NOT NULL" +
+                "PRICE DECIMAL(10, 2) NOT NULL" +
+                "FOREIGN KEY(CATEGORY_ID) REFERENCES CATEGORIES(ID));";
+        try {
+            STATEMENT.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 
