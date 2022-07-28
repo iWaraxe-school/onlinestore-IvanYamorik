@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,12 +24,23 @@ import static java.lang.System.exit;
 public class StoreApp {
     private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+            ParserConfigurationException, IOException, SAXException, SQLException {
         System.out.println("Main Thread");
         Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
-        storeFiller.fillStoreRandomly();
+        Store onlineStore = new Store();
+
+        DBFiller dbFiller = new DBFiller(onlineStore);
+        dbFiller.connectToDB();
+        dbFiller.clearDB();
+        dbFiller.createCategoryTable();
+        dbFiller.createProductTable();
+
+        dbFiller.fillStoreRandomly();
+
+        //StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
+        //storeFiller.fillStoreRandomly();
 
         Map<String, String> getPropertiesToSortMap = XmlReader.getPropertiesToSort();
 
@@ -105,7 +117,7 @@ public class StoreApp {
 
         Store.getInstance();
 
-        StoreFiller storeFiller = new StoreFiller(Store.getInstance());
+        InMemoryStoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
         storeFiller.fillStoreRandomly();
 
         String storeString = Store.getInstance().toString();
@@ -121,9 +133,9 @@ public class StoreApp {
         Constructor<?> storeConstructor = storeClass.getConstructor();
         Store newStore2 = (Store) storeConstructor.newInstance();
 
-        Class<?> storeFillerClass = Class.forName("by.issoft.store.StoreFiller");
+        Class<?> storeFillerClass = Class.forName("by.issoft.store.InMemoryStoreFiller");
         Constructor<?> storeFillerConstructor = storeFillerClass.getConstructor(Store.class);
-        StoreFiller storeFiller2 = (StoreFiller) storeFillerConstructor.newInstance(newStore2);
+        InMemoryStoreFiller storeFiller2 = (InMemoryStoreFiller) storeFillerConstructor.newInstance(newStore2);
 
         //Method.fillStoreRandomly
         Method fillStoreRandomlyMethod = storeFillerClass.getDeclaredMethod("fillStoreRandomly");

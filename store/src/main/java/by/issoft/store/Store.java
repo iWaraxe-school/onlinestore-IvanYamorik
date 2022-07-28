@@ -1,9 +1,14 @@
 package by.issoft.store;
 
 import by.issoft.Category.Category;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Store {
     private List<Category> categoryList;
@@ -11,8 +16,27 @@ public class Store {
 
     private static Store uniqueInstance;
 
-    private Store(){
+    /* private Store(){
         categoryList = new ArrayList<>();
+    } */
+
+    private Store() {
+        categoryList = Collections.synchronizedList(new ArrayList<>());
+
+        List<Category> categories = new ArrayList<>();
+        Reflections reflections = new Reflections("categories", new SubTypesScanner());
+        //Get all existing subtypes of category class
+        Set<Class<? extends Category>> subTypes = reflections.getSubTypesOf(Category.class);
+        for (Class<? extends Category> type : subTypes) {
+            try {
+                Category category = type.getConstructor().newInstance();
+                categories.add(category);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                    NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        this.categoryList = categories;
     }
 
     public static Store getInstance() {
@@ -22,7 +46,7 @@ public class Store {
         return uniqueInstance;
     }
 
-    public List<Category> getCategoryList() {
+   public List<Category> getCategoryList() {
         return categoryList;
     }
 
