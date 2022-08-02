@@ -46,7 +46,7 @@ public class StoreApp {
 
         UnitedComparator comparator = new UnitedComparator();
         List<Category> categoryList = Store.getInstance().getCategoryList();
-        Category firstCategory = categoryList.get(0);
+        Category firstCategory = new Category("Books");
         List<Product> firstCategoryProducts = firstCategory.getProductList();
 
         //Cleanup purchased product list products every 120 seconds

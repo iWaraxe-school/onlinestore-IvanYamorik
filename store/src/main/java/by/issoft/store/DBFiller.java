@@ -76,7 +76,7 @@ public class DBFiller implements StoreFiller {
     public void fillStoreRandomly() {
         Faker faker = new Faker();
         RandomStorePopulator populator = new RandomStorePopulator(faker);
-        Set<Category> categorySet = createCategorySet();
+        Set<Category> categorySet = StoreFiller.createCategoryToIntegerMap().keySet();
 
         for (Category category : categorySet) {
             //add category to DB
@@ -114,21 +114,39 @@ public class DBFiller implements StoreFiller {
         }
     }
 
-    private Set<Category> createCategorySet() {
-        return null;
-    }
 
     public void printFilledStore() {
         try{
             //execute SQL query
             System.out.println("\nPrint Store from DB\n");
             RESULTSET = STATEMENT.executeQuery("SELECT * FROM CATEGORIES");
+            ResultSetMetaData rsmd = RESULTSET.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            while (RESULTSET.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = RESULTSET.getString(i);
+                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                }
+                System.out.println("");
+            }
 
+            System.out.println("");
             RESULTSET = STATEMENT.executeQuery("SELECT * FROM PRODUCTS");
+            rsmd = RESULTSET.getMetaData();
+            columnsNumber = rsmd.getColumnCount();
+            while (RESULTSET.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = RESULTSET.getString(i);
+                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                }
+                System.out.println("");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 }
 
-    ;
+
