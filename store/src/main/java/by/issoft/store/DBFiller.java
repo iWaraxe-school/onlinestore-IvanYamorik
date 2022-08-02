@@ -14,8 +14,8 @@ public class DBFiller implements StoreFiller {
     static Statement STATEMENT = null;
     static ResultSet RESULTSET = null;
     static final String URL = "jdbc:mysql://localhost:3306/onlinestore";
-    static final String USER = "user";
-    static final String PASSWORD = "";
+    static final String USER = "root";
+    static final String PASSWORD = "1216256";
 
     Store store;
 
@@ -60,11 +60,11 @@ public class DBFiller implements StoreFiller {
 
     public void createProductTable() {
         String query = "CREATE TABLE IF NOT EXISTS PRODUCTS (" +
-                "ID INT PRIMARY KEY AUTO_INCREMENT" +
-                "CATEGORY_ID INT" +
-                "NAME VARCHAR(255) NOT NULL" +
-                "RATE DECIMAL(10, 2) NOT NULL" +
-                "PRICE DECIMAL(10, 2) NOT NULL" +
+                "ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
+                "CATEGORY_ID INT NOT NULL," +
+                "NAME VARCHAR(255) NOT NULL," +
+                "RATE DECIMAL(10, 2) NOT NULL," +
+                "PRICE DECIMAL(10, 2) NOT NULL," +
                 "FOREIGN KEY(CATEGORY_ID) REFERENCES CATEGORIES(ID));";
         try {
             STATEMENT.executeUpdate(query);
@@ -73,10 +73,10 @@ public class DBFiller implements StoreFiller {
         }
     }
 
-    public void fillStoreRandomly() throws SQLException {
+    public void fillStoreRandomly() {
         Faker faker = new Faker();
         RandomStorePopulator populator = new RandomStorePopulator(faker);
-        Set<Category> categorySet = createCategorySet();
+        Set<Category> categorySet = StoreFiller.createCategoryToIntegerMap().keySet();
 
         for (Category category : categorySet) {
             //add category to DB
@@ -86,25 +86,67 @@ public class DBFiller implements StoreFiller {
             insertCategories.setString(1, category.getName());
             insertCategories.execute();
 
-            
+            //execute SQL query
+            PreparedStatement findCategoryID = CONNECTION.prepareStatement("SELECT ID FROM CATEGORIES WHERE NAME = ?");
+            findCategoryID.setString(1, category.getName());
+            RESULTSET = findCategoryID.executeQuery();
 
-
-
-
-
-            int randomProductAmountToAdd = new Random().nextInt(10) + 1;
-            for (int j = 0; j < randomProductAmountToAdd; j++) {
-                PreparedStatement insertProduct = connection.prepareStatement("INSERT INTO products(category_id, name, rate, price) VALUES(?, ?, ?, ?)");
-                insertProduct.setInt(1, i + 1);
-                insertProduct.setString(2, populator.getProductName(categories.get(i).getName()));
-                insertProduct.setInt(3, populator.getRate());
-                insertProduct.setDouble(4, populator.getPrice());
-                insertProduct.execute();
+            //process result set
+            int id = 0;
+            while (RESULTSET.next()) {
+                id = RESULTSET.getInt("ID");
             }
 
-
-
+            Random randomProductAmountToAdd = new Random();
+            for (int i = 0; i < randomProductAmountToAdd.nextInt(10); i++) {
+                PreparedStatement insertProduct = CONNECTION.prepareStatement("INSERT INTO PRODUCTS(category_id, name, rate, price) VALUES(?, ?, ?, ?)");
+                insertProduct.setInt(1, id);
+                insertProduct.setString(2, populator.getProductName(category.getName()));
+                insertProduct.setDouble(3, populator.getRate());
+                insertProduct.setDouble(4, populator.getPrice());
+                System.out.println(insertProduct);
+                insertProduct.execute();
+                System.out.println("New product inserted.");
+            }
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+    }
 
+
+    public void printFilledStore() {
+        try{
+            //execute SQL query
+            System.out.println("\nPrint Store from DB\n");
+            RESULTSET = STATEMENT.executeQuery("SELECT * FROM CATEGORIES");
+            ResultSetMetaData rsmd = RESULTSET.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            while (RESULTSET.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = RESULTSET.getString(i);
+                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                }
+                System.out.println("");
+            }
+
+            System.out.println("");
+            RESULTSET = STATEMENT.executeQuery("SELECT * FROM PRODUCTS");
+            rsmd = RESULTSET.getMetaData();
+            columnsNumber = rsmd.getColumnCount();
+            while (RESULTSET.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = RESULTSET.getString(i);
+                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                }
+                System.out.println("");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+
+

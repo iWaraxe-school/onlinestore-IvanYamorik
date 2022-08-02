@@ -29,15 +29,15 @@ public class StoreApp {
         System.out.println("Main Thread");
         Store.getInstance();
 
-        Store onlineStore = new Store();
+        Store onlineStore = Store.getInstance();
 
         DBFiller dbFiller = new DBFiller(onlineStore);
         dbFiller.connectToDB();
         dbFiller.clearDB();
         dbFiller.createCategoryTable();
         dbFiller.createProductTable();
-
         dbFiller.fillStoreRandomly();
+        dbFiller.printFilledStore();
 
         //StoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
         //storeFiller.fillStoreRandomly();
@@ -46,7 +46,7 @@ public class StoreApp {
 
         UnitedComparator comparator = new UnitedComparator();
         List<Category> categoryList = Store.getInstance().getCategoryList();
-        Category firstCategory = categoryList.get(0);
+        Category firstCategory = new Category("Books");
         List<Product> firstCategoryProducts = firstCategory.getProductList();
 
         //Cleanup purchased product list products every 120 seconds
