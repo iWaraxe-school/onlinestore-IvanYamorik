@@ -36,7 +36,7 @@ public class HttpServer {
                         // bad request
                         pout.print("HTTP/1.0 400 Bad Request" + newLine + newLine);
                     } else {
-                        String response = "Hello, World!";
+                        String response = "Request accepted";
 
                         pout.print(
                                 "HTTP/1.0 200 OK" + newLine +
