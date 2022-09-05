@@ -1,4 +1,4 @@
-package by.issoft.store;
+package by.issoft.store.http;
 
 import java.io.*;
 import java.net.ServerSocket;
