@@ -4,6 +4,8 @@ package by.issoft.storeapp;
 import by.issoft.Category.Category;
 import by.issoft.Product;
 import by.issoft.store.*;
+import by.issoft.store.http.HttpClient;
+import by.issoft.store.http.HttpServer;
 import org.xml.sax.SAXException;
 import sortProperties.UnitedComparator;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +28,13 @@ public class StoreApp {
     private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
-            ParserConfigurationException, IOException, SAXException, SQLException {
+            ParserConfigurationException, IOException, SAXException, SQLException, InterruptedException, URISyntaxException {
         System.out.println("Main Thread");
         Store.getInstance();
 
         Store onlineStore = Store.getInstance();
+        new HttpServer();
+        new HttpClient();
 
         DBFiller dbFiller = new DBFiller(onlineStore);
         dbFiller.connectToDB();
