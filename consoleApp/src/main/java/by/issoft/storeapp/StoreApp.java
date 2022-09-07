@@ -5,7 +5,8 @@ import by.issoft.Category.Category;
 import by.issoft.Product;
 import by.issoft.store.*;
 import by.issoft.store.http.HttpClient;
-import by.issoft.store.http.HttpServer;
+import by.issoft.store.http.HttpFiller;
+import by.issoft.store.http.Server;
 import org.xml.sax.SAXException;
 import sortProperties.UnitedComparator;
 
@@ -33,8 +34,13 @@ public class StoreApp {
         Store.getInstance();
 
         Store onlineStore = Store.getInstance();
-        new HttpServer();
-        new HttpClient();
+        Server server = new Server();
+        server.createServer();
+
+        HttpClient client = new HttpClient();
+        Filler filler = new HttpFiller();
+
+
 
         DBFiller dbFiller = new DBFiller(onlineStore);
         dbFiller.connectToDB();

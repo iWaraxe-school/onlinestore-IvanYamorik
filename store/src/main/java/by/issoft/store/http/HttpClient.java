@@ -23,9 +23,9 @@ public class HttpClient {
             connection.setRequestMethod(method);
             connection.setRequestProperty("Authorization", "Basic " + encoding);
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error to get connection", e);
+            throw new RuntimeException("Error to get connection. URL problem", e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error to get connection. Encoding problem", e);
         } catch (IOException e) {
             throw new RuntimeException("Error to get connection", e);
         }
@@ -33,9 +33,6 @@ public class HttpClient {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(HttpClient.class.getName());
-
-    public HttpClient() throws IOException, InterruptedException, URISyntaxException {
-    }
 
     //authentication
     private static final String getBasicAuthenticationHeader(String username, String password) {

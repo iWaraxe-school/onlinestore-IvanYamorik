@@ -1,17 +1,7 @@
 package by.issoft.store.http;
 
-import com.sun.net.httpserver.BasicAuthenticator;
-import com.sun.net.httpserver.HttpHandler;
-
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
-
-import static javax.security.auth.Subject.createContext;
-
 public class HttpServer {
-
+/**
     HttpServer server;
 
     static final int port = 8080;
@@ -20,7 +10,7 @@ public class HttpServer {
     public static void main(String[] args) {
         try {
             ServerSocket socket = new ServerSocket(port);
-            createContext("/categories", new CategoriesHandler());
+            server.createContext("/categories", new CategoriesHandler());
             createContext("/cart", new CartHandler());
 
             while (true) {
@@ -69,5 +59,5 @@ public class HttpServer {
     private void createContext(String path, HttpHandler handler) {
         server.createContext(path, handler);
 
-    }
+    } */
 }

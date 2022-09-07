@@ -13,7 +13,7 @@ public class HttpFiller implements Filler {
     Store store;
 
     @Override
-    public List<Category> getListOfCategories() throws IOException, URISyntaxException, InterruptedException {
+    public List<Category> getListOfCategories() {
         HttpURLConnection connection = new HttpClient().getConnection("/categories", "GET");
         String contentType = connection.getHeaderField("Content-type");
         if (contentType.equals("application/json")) {
