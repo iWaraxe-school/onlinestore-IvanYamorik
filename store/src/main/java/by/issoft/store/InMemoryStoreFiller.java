@@ -1,18 +1,21 @@
 package by.issoft.store;
 
 import by.issoft.Category.Category;
-import by.issoft.Product;
-import com.github.javafaker.Faker;
 
-import java.util.Map;
+import java.util.List;
 
-public class InMemoryStoreFiller implements StoreFiller {
+public class InMemoryStoreFiller implements Filler {
     Store store;
 
     public InMemoryStoreFiller(Store store) {
         this.store = store;
     }
 
+    @Override
+    public List<Category> getListOfCategories() {
+        return null;
+    }
+/**
     public void fillStoreRandomly() {
         Faker faker = new Faker();
 
@@ -29,7 +32,7 @@ public class InMemoryStoreFiller implements StoreFiller {
             }
             this.store.getCategoryList().add(entry.getKey());
         }
-    }
+    } */
 
 
 }
