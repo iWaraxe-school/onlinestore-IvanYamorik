@@ -3,6 +3,7 @@ package by.issoft.store.http;
 import by.issoft.Category.Category;
 import by.issoft.store.Filler;
 import by.issoft.store.Store;
+import com.github.lbovolini.mapper.ObjectMapper;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,5 +32,7 @@ public class HttpFiller implements Filler {
 
     public HttpFiller() throws URISyntaxException, IOException, InterruptedException {
     }
+
+
 
 }

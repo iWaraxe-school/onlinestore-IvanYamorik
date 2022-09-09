@@ -1,15 +1,19 @@
 package by.issoft.store.http;
 
+import by.issoft.Category.Category;
+import com.github.lbovolini.mapper.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
+import java.util.List;
 
 public class HttpClient {
     java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
@@ -49,4 +53,22 @@ public class HttpClient {
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
     HttpHeaders responseHeaders = response.headers();
     //logger.info("Status using headers: {}", response.statusCode());
+
+
+    public void addToCart(List<Category> categories, int categoryId, int productId) {
+        connection = getConnection("/cart", "POST");
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+        connection.setDoOutput(true);
+        try {
+            OutputStream os = connection.getOutputStream();
+            ObjectMapper mapper = new ObjectMapper();
+            byte[] postData = mapper.writeValueAsBytes(categories.get(categoryId).getProductList().get(productId));
+            os.write(postData);
+        } catch (IOException e) {
+            throw new RuntimeException("Error to add to cart", e);
+        }
+        try
+    }
+
+
 }
