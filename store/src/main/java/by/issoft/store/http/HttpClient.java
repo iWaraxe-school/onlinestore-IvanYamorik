@@ -1,7 +1,7 @@
 package by.issoft.store.http;
 
 import by.issoft.Category.Category;
-import com.github.lbovolini.mapper.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +18,25 @@ import java.util.List;
 public class HttpClient {
     java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
     HttpURLConnection connection;
+
+    public HttpClient() throws URISyntaxException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI("https://localhost/basic-auth"))
+                .header("Authorization", getBasicAuthenticationHeader("user", "password"))
+                .build();
+
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        HttpHeaders responseHeaders = response.headers();
+        logger.info("Status using headers: {}", response.statusCode());
+    }
 
     public HttpURLConnection getConnection(String file, String method) {
         try {
@@ -44,15 +63,7 @@ public class HttpClient {
         return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
     }
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .GET()
-            .uri(new URI("https://localhost/basic-auth"))
-            .header("Authorization", getBasicAuthenticationHeader("user", "password"))
-            .build();
 
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    HttpHeaders responseHeaders = response.headers();
-    //logger.info("Status using headers: {}", response.statusCode());
 
 
     public void addToCart(List<Category> categories, int categoryId, int productId) {
@@ -67,7 +78,7 @@ public class HttpClient {
         } catch (IOException e) {
             throw new RuntimeException("Error to add to cart", e);
         }
-        try
+        //try
     }
 
 

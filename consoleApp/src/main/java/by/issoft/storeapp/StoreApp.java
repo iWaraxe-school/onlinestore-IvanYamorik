@@ -129,7 +129,7 @@ public class StoreApp {
         Store.getInstance();
 
         InMemoryStoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
-        storeFiller.fillStoreRandomly();
+        //storeFiller.fillStoreRandomly();
 
         String storeString = Store.getInstance().toString();
 

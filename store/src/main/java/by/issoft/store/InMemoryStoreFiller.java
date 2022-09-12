@@ -5,14 +5,16 @@ import by.issoft.Category.Category;
 import java.util.List;
 
 public class InMemoryStoreFiller implements Filler {
-    Store store;
+    private Store store;
 
+    public InMemoryStoreFiller() {}
     public InMemoryStoreFiller(Store store) {
         this.store = store;
     }
 
     @Override
     public List<Category> getListOfCategories() {
+        //List<Category> = new ArrayList<>();
         return null;
     }
 /**

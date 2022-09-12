@@ -3,7 +3,8 @@ package by.issoft.store.http;
 import by.issoft.Category.Category;
 import by.issoft.store.Filler;
 import by.issoft.store.Store;
-import com.github.lbovolini.mapper.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -15,7 +16,12 @@ public class HttpFiller implements Filler {
 
     @Override
     public List<Category> getListOfCategories() {
-        HttpURLConnection connection = new HttpClient().getConnection("/categories", "GET");
+        HttpURLConnection connection = null;
+        try {
+            connection = new HttpClient().getConnection("/categories", "GET");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         String contentType = connection.getHeaderField("Content-type");
         if (contentType.equals("application/json")) {
             ObjectMapper mapper = new ObjectMapper();
