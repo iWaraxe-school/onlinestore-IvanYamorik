@@ -2,7 +2,10 @@ package by.issoft.store;
 
 import by.issoft.Category.Category;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class InMemoryStoreFiller implements Filler {
     private Store store;
@@ -14,8 +17,13 @@ public class InMemoryStoreFiller implements Filler {
 
     @Override
     public List<Category> getListOfCategories() {
-        //List<Category> = new ArrayList<>();
-        return null;
+        List<Category> categories = new ArrayList<>();
+        Set<Map.Entry<Category, Integer>> entries = StoreFiller.createCategoryToIntegerMap().entrySet();
+        for (Map.Entry<Category, Integer> entry: entries) {
+            categories.add(entry.getKey());
+        }
+
+        return categories;
     }
 /**
     public void fillStoreRandomly() {
