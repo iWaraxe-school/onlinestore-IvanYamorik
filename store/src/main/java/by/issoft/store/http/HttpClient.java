@@ -20,11 +20,15 @@ public class HttpClient {
     HttpURLConnection connection;
 
     public HttpClient() throws URISyntaxException {
-        HttpRequest request = HttpRequest.newBuilder()
+       HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI("https://localhost/basic-auth"))
-                .header("Authorization", getBasicAuthenticationHeader("user", "password"))
+                .uri(new URI("http://localhost:8080/categories"))
+                //.header("Authorization", getBasicAuthenticationHeader("user", "password"))
                 .build();
+
+     /**  HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .build();  */
 
         HttpResponse<String> response = null;
         try {
@@ -35,6 +39,7 @@ public class HttpClient {
             e.printStackTrace();
         }
         HttpHeaders responseHeaders = response.headers();
+        System.out.println(response.body());
         logger.info("Status using headers: {}", response.statusCode());
     }
 
