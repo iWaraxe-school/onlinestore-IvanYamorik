@@ -1,37 +1,43 @@
 package by.issoft.storeapp;
 
 
-import by.issoft.Category.Category;
 import by.issoft.Product;
-import by.issoft.store.*;
+import by.issoft.store.CartRunnable;
+import by.issoft.store.InMemoryStoreFiller;
+import by.issoft.store.Store;
+import by.issoft.store.http.HttpClient;
+import by.issoft.store.http.Server;
 import org.xml.sax.SAXException;
-import sortProperties.UnitedComparator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static java.lang.System.exit;
 
 public class StoreApp {
     private static CopyOnWriteArrayList<Product> cart = new CopyOnWriteArrayList<>();
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException,
-            ParserConfigurationException, IOException, SAXException, SQLException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
+            InstantiationException, IllegalAccessException, ParserConfigurationException, IOException, SAXException, SQLException,
+            InterruptedException, URISyntaxException {
         System.out.println("Main Thread");
         Store.getInstance();
 
         Store onlineStore = Store.getInstance();
+        Server server = new Server();
+        server.createServer();
+        System.in.read();
+        HttpClient client = new HttpClient();
+        //Filler filler = new HttpFiller();
 
-        DBFiller dbFiller = new DBFiller(onlineStore);
+
+
+        /**DBFiller dbFiller = new DBFiller(onlineStore);
         dbFiller.connectToDB();
         dbFiller.clearDB();
         dbFiller.createCategoryTable();
@@ -90,7 +96,7 @@ public class StoreApp {
                 console.next();
             }
 
-        }
+        } */
 
         //printStoreWithoutReflection();
 
@@ -118,7 +124,7 @@ public class StoreApp {
         Store.getInstance();
 
         InMemoryStoreFiller storeFiller = new InMemoryStoreFiller(Store.getInstance());
-        storeFiller.fillStoreRandomly();
+        //storeFiller.fillStoreRandomly();
 
         String storeString = Store.getInstance().toString();
 
